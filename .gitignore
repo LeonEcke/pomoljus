@@ -31,3 +31,7 @@ fp-info-cache
 # Gerber files
 *Gerber
 *Gerber.zip
+
+# Firmware
+/firmware/build/
+*.vscode/

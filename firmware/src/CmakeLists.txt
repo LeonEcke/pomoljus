@@ -1,0 +1,15 @@
+set(HEADERS "../include/sk6812Driver/sk6812Driver.h")
+
+add_library(sk6812Driver STATIC sk6812Driver.c LightMode.cpp "${HEADERS}")
+
+target_include_directories(	sk6812Driver
+							PUBLIC
+							"../include"
+							PRIVATE
+							"../include/sk6812Driver")
+
+target_link_libraries(	sk6812Driver
+						PRIVATE
+						pico_stdlib
+						hardware_pio
+)

@@ -1,6 +1,6 @@
-set(HEADERS "../include/sk6812Driver/sk6812Driver.h")
+set(HEADERS "../include/sk6812Driver/sk6812Driver.hpp")
 
-add_library(sk6812Driver STATIC sk6812Driver.c LightMode.cpp "${HEADERS}")
+add_library(sk6812Driver STATIC sk6812Driver.cpp "${HEADERS}")
 
 target_include_directories(	sk6812Driver
 							PUBLIC

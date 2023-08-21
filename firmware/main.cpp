@@ -1,7 +1,7 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 
-#include <sk6812Driver/sk6812Driver.h>
+#include <sk6812Driver/sk6812Driver.hpp>
 
 int main() {
 

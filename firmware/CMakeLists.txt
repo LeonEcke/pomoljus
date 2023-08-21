@@ -15,7 +15,7 @@ project(pomoljus
 pico_sdk_init()
 
 # Create main executable
-add_executable(main main.c)
+add_executable(main main.cpp)
 
 # Add custom libraries.
 # Add generated PIO executable to sk6812Driver.

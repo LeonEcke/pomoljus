@@ -14,6 +14,6 @@ struct colour_value {
 
 void sk6812_init();
 
-int sk6812_loop();
+void sk6812_loop();
 
 #endif

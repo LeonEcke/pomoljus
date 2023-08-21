@@ -1,4 +1,4 @@
-#include "sk6812Driver.h"
+#include "sk6812Driver.hpp"
 
 // Needed for PIO operation of SK6812s
 #define _USE_MATH_DEFINES
@@ -62,7 +62,7 @@ void sk6812_init(){
 	}
 }
 
-int sk6812_loop(){
+void sk6812_loop(){
 	static int t = 0;
     static int binary_counter = 0;
     static int ix = 0;

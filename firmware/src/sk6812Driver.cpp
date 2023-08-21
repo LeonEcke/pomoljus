@@ -24,15 +24,17 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
 
 uint32_t hue_brightness_to_rgb(struct colour_value hue_brightness){
 
+	static const double pi = 3.14159265359;
+
 	// https://www.desmos.com/calculator/bbpxleqvoa for demo?
 
 	/* Hue is calculated from a 3 phase sine wave.	 Offset the colours by 1/3 period.   Use the brightness as amplitude.
 	*		   |														 |						  |
 	*		   |	  Value origin.   Set the phase period to 255 units. |  Set range to [0, 255] |	  		 Range to [0, 255]
 	*		   |		   |					   |					 |			   |		  |				     	 | */
-	int r = ( sin( (hue_brightness.hue * ((2 * M_PI) / 255.0) ) + ((0 * M_PI) / 3) ) + 1 ) * hue_brightness.brightness * 8;
-	int g = ( sin( (hue_brightness.hue * ((2 * M_PI) / 255.0) ) + ((2 * M_PI) / 3) ) + 1 ) * hue_brightness.brightness * 8;
-	int b = ( sin( (hue_brightness.hue * ((2 * M_PI) / 255.0) ) + ((4 * M_PI) / 3) ) + 1 ) * hue_brightness.brightness * 8;
+	int r = ( sin( (hue_brightness.hue * ((2 * pi) / 255.0) ) + ((0 * pi) / 3) ) + 1 ) * hue_brightness.brightness * 8;
+	int g = ( sin( (hue_brightness.hue * ((2 * pi) / 255.0) ) + ((2 * pi) / 3) ) + 1 ) * hue_brightness.brightness * 8;
+	int b = ( sin( (hue_brightness.hue * ((2 * pi) / 255.0) ) + ((4 * pi) / 3) ) + 1 ) * hue_brightness.brightness * 8;
 
 	return (urgb_u32(r, g, b));
 }

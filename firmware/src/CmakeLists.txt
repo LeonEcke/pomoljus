@@ -13,3 +13,6 @@ target_link_libraries(	sk6812Driver
 						pico_stdlib
 						hardware_pio
 )
+
+set_target_properties(	sk6812Driver PROPERTIES
+							CXX_STANDARD 17)

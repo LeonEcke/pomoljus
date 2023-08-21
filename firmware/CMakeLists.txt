@@ -17,6 +17,10 @@ pico_sdk_init()
 # Create main executable
 add_executable(main main.cpp)
 
+set_target_properties(	main PROPERTIES
+							C_STANDARD 17
+							CXX_STANDARD_REQUIRED 17)
+
 # Add custom libraries.
 # Add generated PIO executable to sk6812Driver.
 add_subdirectory(src)
@@ -28,10 +32,6 @@ target_link_libraries(	main
 						sk6812Driver
 						pico_stdlib
 )
-
-set_target_properties(	main PROPERTIES
-							C_STANDARD 11
-							CXX_STANDARD 11)
 
 # Last in root CMakeList. Generates binary for RP2040
 pico_add_extra_outputs(main)

@@ -1,8 +1,8 @@
 #include "sk6812Driver.hpp"
 
 // Needed for PIO operation of SK6812s
-#define _USE_MATH_DEFINES
-#include <math.h>
+
+#include <cmath>
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "sk6812.pio.h"

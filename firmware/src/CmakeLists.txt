@@ -1,18 +1,45 @@
-set(HEADERS "../include/sk6812Driver/sk6812Driver.hpp")
+# LedValue class ==============================================================
 
-add_library(sk6812Driver STATIC sk6812Driver.cpp "${HEADERS}")
+set(LEDVALUE_HEADER "../include/ledValue/ledValue.hpp")
+
+add_library(ledValue STATIC ledValue.cpp "${LEDVALUE_HEADER}")
+
+target_include_directories(	ledValue
+							PUBLIC
+							"../include"
+							PRIVATE
+							"../include/ledValue"
+)
+
+target_link_libraries(	ledValue
+						PRIVATE
+						pico_stdlib
+)
+
+set_target_properties(	ledValue PROPERTIES
+							CXX_STANDARD 17
+)
+
+# sk6812 driver ===============================================================
+
+set(SK6812DRIVER_HEADER "../include/sk6812Driver/sk6812Driver.hpp")
+
+add_library(sk6812Driver STATIC sk6812Driver.cpp "${SK6812DRIVER_HEADER}")
 
 target_include_directories(	sk6812Driver
 							PUBLIC
 							"../include"
 							PRIVATE
-							"../include/sk6812Driver")
+							"../include/sk6812Driver"
+)
 
 target_link_libraries(	sk6812Driver
 						PRIVATE
 						pico_stdlib
 						hardware_pio
+						ledValue
 )
 
 set_target_properties(	sk6812Driver PROPERTIES
-							CXX_STANDARD 17)
+							CXX_STANDARD 17
+)

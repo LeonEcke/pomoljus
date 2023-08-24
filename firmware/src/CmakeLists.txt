@@ -20,6 +20,29 @@ set_target_properties(	ledValue PROPERTIES
 							CXX_STANDARD 17
 )
 
+# LedModifier class ===========================================================
+
+set(LEDMODIFIER_HEADER "../include/ledModifier/ledModifier.hpp")
+
+add_library(ledModifier STATIC ledModifier.cpp "${LEDMODIFIER_HEADER}")
+
+target_include_directories(	ledModifier
+							PUBLIC
+							"../include"
+							PRIVATE
+							"../include/ledModifier"
+)
+
+target_link_libraries(	ledModifier
+						PRIVATE
+						pico_stdlib
+						ledValue
+)
+
+set_target_properties(	ledModifier PROPERTIES
+							CXX_STANDARD 17
+)
+
 # sk6812 driver ===============================================================
 
 set(SK6812DRIVER_HEADER "../include/sk6812Driver/sk6812Driver.hpp")

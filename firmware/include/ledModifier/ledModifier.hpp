@@ -2,6 +2,7 @@
 #define LEDMODIFIER_H
 
 #include "ledValue/ledValue.hpp"
+#include "pico/stdlib.h"
 
 
 // Setup functions ============================================================
@@ -9,7 +10,7 @@
 /// @brief Set pointers to be used by modifier functions
 /// @param led_array Leds to be changed.
 /// @param tick A progressing tick that time based animations is based on.
-void setPointers(HSV led_array_pointer[], long& tick_pointer);
+void setPointers(HSV* led_array_pointer, long* tick_pointer);
 
 
 // Static modifiers ===========================================================
@@ -73,6 +74,6 @@ void breathAnimation(uint8_t period_time_sec, uint8_t variation_amount,
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
 void progressAnimation(uint8_t progress, uint8_t variation_amount,
-						void* modification_method);
+						void (&modification_method)(HSV& led, int amount));
 
 #endif

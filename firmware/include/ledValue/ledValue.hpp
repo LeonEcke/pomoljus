@@ -1,6 +1,8 @@
 #ifndef LEDVALUE_H
 #define LEDVALUE_H
 
+#include "pico/stdlib.h"
+
 class RGB; // forward declaration
 
 /*

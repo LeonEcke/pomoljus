@@ -20,7 +20,7 @@ set_target_properties(	ledValue PROPERTIES
 							CXX_STANDARD 17
 )
 
-# LedModifier functions ===========================================================
+# LedModifier functions =======================================================
 
 set(LEDMODIFIER_HEADER "../include/ledModifier/ledModifier.hpp")
 
@@ -43,7 +43,7 @@ set_target_properties(	ledModifier PROPERTIES
 							CXX_STANDARD 17
 )
 
-# LedModes class ===========================================================
+# LedModes function ===========================================================
 
 set(LEDMODES_HEADER "../include/ledModes/ledModes.hpp")
 

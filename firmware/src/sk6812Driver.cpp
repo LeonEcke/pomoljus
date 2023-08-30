@@ -14,6 +14,8 @@ int my_brightness = 100;
 
 struct HSV led_array[nr_of_leds];
 
+static const uint8_t byte_max_value = 0xFF;
+
 absolute_time_t tick;
 long tickMs;
 
@@ -59,6 +61,6 @@ void sk6812_loop() {
 
 	set_leds();
 	ix++;
-	ix %= 255;
+	ix %= byte_max_value;
 	sleep_ms(10);
 }

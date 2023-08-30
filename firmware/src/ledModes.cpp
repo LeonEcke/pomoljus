@@ -39,8 +39,10 @@ void generic_progress_light_mode(uint8_t progress, uint8_t background_hue) {
 	const static HSV background = {background_hue, 255, default_value};
 	setColour(background);
 	waveAnimation(1000, 10, 700, changeHue);
-	progressAnimation(progress, default_value - (default_value / 7),
+	progressAnimation(progress, default_value - (default_value / 4),
 					  changeValue);
+	progressAnimation(progress, default_value - (default_value / 2),
+					  changeSaturation);
 }
 
 void work_light_mode(uint8_t progress) {

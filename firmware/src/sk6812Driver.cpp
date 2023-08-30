@@ -7,6 +7,7 @@
 #include "hardware/clocks.h"
 #include "sk6812.pio.h"
 #include "ledValue/ledValue.hpp"
+#include "ledModifier/ledModifier.hpp"
 
 int my_brightness = 100;
 
@@ -43,37 +44,19 @@ void sk6812_init(){
 	// TODO: Show calculation for the clk Hz
 	sk6812_program_init(pio, sm, offset, led_data_output_pin, 550000);
 
-	for (int i = 0; i < nr_of_leds; ++i){
-		led_array[i].hue = 0;
-		led_array[i].value = my_brightness;
-		led_array[i].saturation = 255;
-	}
+	setPointers(led_array, &tickMs);
 }
 
 void sk6812_loop(){
-	static int t = 0;
-    static int binary_counter = 0;
-    static int ix = 0;
 
+	static uint8_t ix = 0;
 
+	HSV setLed = {0, 255, 100};
+	setColour(setLed);
 
-	for (int i = 0; i < nr_of_leds; ++i){
-		led_array[i].hue = (t + (i * 20)) % 255;
-	}
+	progressAnimation(ix, 100, changeValue);
 	set_leds();
-	
-	++t;
-	if (t >= 255)
-		t = 0;
-    ++ix;
-    if (ix % 50 == 0){
-        ++binary_counter;
-        for (int i = 0; i < nr_of_leds; ++i){
-            if ( ( binary_counter & ( 1U << i ) ) != 0 )
-                led_array[i].value = my_brightness;
-            else
-                led_array[i].value = 10;
-        }
-    }
+	ix++;
+	ix %= 255;
 	sleep_ms(10);
 }

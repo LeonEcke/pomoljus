@@ -13,6 +13,9 @@ int my_brightness = 100;
 
 struct HSV led_array[nr_of_leds];
 
+absolute_time_t tick;
+long tickMs;
+
 static inline void put_pixel(uint32_t pixel_grb) {
 	pio_sm_put_blocking(pio0, 0, pixel_grb << 8u);
 }
@@ -51,8 +54,13 @@ void sk6812_loop(){
 
 	static uint8_t ix = 0;
 
+	tick = get_absolute_time();
+	tickMs = to_ms_since_boot(tick);
+
 	HSV setLed = {0, 255, 100};
 	setColour(setLed);
+
+	breathAnimation(10000, 200, 0, changeHue);
 
 	progressAnimation(ix, 100, changeValue);
 	set_leds();

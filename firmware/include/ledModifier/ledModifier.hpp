@@ -58,16 +58,20 @@ void changeValue(HSV& led, int amount);
 /// @param period_time_sec Time for a full sin cycle to be completed.
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
-void waveAnimation(uint16_t period_time_ms, uint8_t variation_amount,
-						uint16_t offset_ms, void (&modification_method)(HSV& led, int amount));
+void waveAnimation(uint16_t period_time_ms,
+				   uint8_t variation_amount,
+				   uint16_t offset_ms,
+				   void (&modification_method)(HSV& led, int amount));
 
 /// @brief A subtractive animation that varies the selected value in and out
 ///	uniformly over time.
 /// @param period_time_sec Time for a full "breath" to be completed.
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
-void breathAnimation(uint16_t period_time_ms, uint8_t variation_amount,
-						uint16_t offset_ms, void (&modification_method)(HSV& led, int amount));
+void breathAnimation(uint16_t period_time_ms,
+					 uint8_t variation_amount,
+					 uint16_t offset_ms,
+					 void (&modification_method)(HSV& led, int amount));
 
 
 // Progress indicating modifiers ( uses progression value ) ===================
@@ -76,7 +80,8 @@ void breathAnimation(uint16_t period_time_ms, uint8_t variation_amount,
 /// @param progress A value `]0, 255[` representing completed percentage.
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
-void progressAnimation(uint8_t progress, uint8_t variation_amount,
-						void (&modification_method)(HSV& led, int amount));
+void progressAnimation(uint8_t progress,
+					   uint8_t variation_amount,
+					   void (&modification_method)(HSV& led, int amount));
 
 #endif

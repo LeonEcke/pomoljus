@@ -1,47 +1,49 @@
 
-#include "pico/stdlib.h"
 #include "ledValue.hpp"
+
 #include <cmath>
 
-struct TempRGB{
+#include "pico/stdlib.h"
+
+struct TempRGB {
 	float r, g, b;
 
-	RGB to_rgb(){
-		RGB rgb = {(uint8_t)(r*255), (uint8_t)(g*255), (uint8_t)(b*255) };
+	RGB to_rgb() {
+		RGB rgb = {(uint8_t)(r * 255), (uint8_t)(g * 255), (uint8_t)(b * 255)};
 		return rgb;
 	}
 };
 
-void RGB::to_rgb(const HSV& hsv){
+void RGB::to_rgb(const HSV& hsv) {
 	// easy calculations caught first to avoid work
-	if (hsv.saturation == 0 || hsv.value == 0){
+	if (hsv.saturation == 0 || hsv.value == 0) {
 		*this = {hsv.value, hsv.value, hsv.value};
 	}
 
 	// hue is normalized to ]0, 6[
-	const float H = ( hsv.hue / 42.5 );
+	const float H = (hsv.hue / 42.5);
 
 	// saturation and value normalized to ]0, 1[
 	const float S = hsv.saturation / 255.0;
 	const float V = hsv.value / 255.0;
 
-	const float x = V * ( 1.0 - S );
-	const float y = V * ( 1.0 - ( H - std::floor(H) ) * S );
-	const float z = V * ( 1.0 - ( 1 - ( H - std::floor(H) ) ) * S );
-	
+	const float x = V * (1.0 - S);
+	const float y = V * (1.0 - (H - std::floor(H)) * S);
+	const float z = V * (1.0 - (1 - (H - std::floor(H))) * S);
+
 	// Depending on hue, xyzV are used differently. See paper for more
 	TempRGB temp;
-	if ( (int)H == 0)
+	if ((int)H == 0)
 		temp = {V, z, x};
-	else if ( (int)H == 1)
+	else if ((int)H == 1)
 		temp = {y, V, x};
-	else if ( (int)H == 2)
+	else if ((int)H == 2)
 		temp = {x, V, z};
-	else if ( (int)H == 3)
+	else if ((int)H == 3)
 		temp = {x, y, V};
-	else if ( (int)H == 4)
+	else if ((int)H == 4)
 		temp = {z, x, V};
-	else // (int)H == 5 or 6
+	else  // (int)H == 5 or 6
 		temp = {V, x, y};
 
 	red = temp.r * 255.0;
@@ -49,29 +51,28 @@ void RGB::to_rgb(const HSV& hsv){
 	blue = temp.b * 255.0;
 }
 
-uint32_t RGB::to_single_value() const
-{
-	return ( red << ( 8 * 2 ) ) | ( green << ( 8 * 1) | ( blue << ( 8 * 0 ) ) );
+uint32_t RGB::to_single_value() const {
+	return (red << (8 * 2)) | (green << (8 * 1) | (blue << (8 * 0)));
 }
 
-uint8_t my_max(uint8_t a, uint8_t b, uint8_t c){
-	if (a >= b && a >= c)
-		return a;
+uint8_t my_max(uint8_t a, uint8_t b, uint8_t c) {
+	if (a >= b && a >= c) return a;
 	if (b >= a && b >= c)
 		return b;
-	else return c;
+	else
+		return c;
 }
 
 // Couldn't get the max and min functions from <algorithms> working.
-uint8_t my_min(uint8_t a, uint8_t b, uint8_t c){
-	if (a <= b && a <= c)
-		return a;
+uint8_t my_min(uint8_t a, uint8_t b, uint8_t c) {
+	if (a <= b && a <= c) return a;
 	if (b <= a && b <= c)
 		return b;
-	else return c;
+	else
+		return c;
 }
 
-void HSV::to_hsv(const RGB& rgb){
+void HSV::to_hsv(const RGB& rgb) {
 	const uint8_t max = my_max(rgb.red, rgb.green, rgb.blue);
 	const uint8_t min = my_min(rgb.red, rgb.green, rgb.blue);
 
@@ -79,41 +80,41 @@ void HSV::to_hsv(const RGB& rgb){
 
 	//? possible issue: hsv.hue is unsigned, yet this can yield negatives
 
-	if (delta == 0) 	// if all colours are equal then saturation is 0
-		hue = 0;	// and hue is undefined. So its set to 0.
+	if (delta == 0)	 // if all colours are equal then saturation is 0
+		hue = 0;	 // and hue is undefined. So its set to 0.
 	else if (max == rgb.red)
-		hue = ( (float)( rgb.green - rgb.blue)  / delta ) * 255;
+		hue = ((float)(rgb.green - rgb.blue) / delta) * 255;
 	else if (max == rgb.green)
-		hue = ( ( (float)( rgb.blue - rgb.red ) / delta ) + 2 ) * 255;
+		hue = (((float)(rgb.blue - rgb.red) / delta) + 2) * 255;
 	else if (max == rgb.blue)
-		hue = ( ( (float)( rgb.red - rgb.green ) / delta ) + 4 ) * 255;
+		hue = (((float)(rgb.red - rgb.green) / delta) + 4) * 255;
 
-	value = max; // value is equal to largest RGB value
+	value = max;  // value is equal to largest RGB value
 
-	saturation = ( value == 0 ? 0 : ( ( delta / value ) * 255 ) );
+	saturation = (value == 0 ? 0 : ((delta / value) * 255));
 }
 
-RGB mix(const RGB& a, const RGB& b, uint8_t factor = 50){
-	//untested
+RGB mix(const RGB& a, const RGB& b, uint8_t factor = 50) {
+	// untested
 	RGB new_rgb;
 
-	if (factor > 100)
-		factor = 100;
+	if (factor > 100) factor = 100;
 
-	new_rgb.red = a.red * ( 100 - factor ) + ( b.red - a.red ) * factor;
-	new_rgb.green = a.green * ( 100 - factor ) + ( b.green - a.green ) * factor;
-	new_rgb.blue = a.blue * ( 100 - factor ) + ( b.blue - a.blue ) * factor;
+	new_rgb.red = a.red * (100 - factor) + (b.red - a.red) * factor;
+	new_rgb.green = a.green * (100 - factor) + (b.green - a.green) * factor;
+	new_rgb.blue = a.blue * (100 - factor) + (b.blue - a.blue) * factor;
 
 	return new_rgb;
 }
 
-HSV mix(const HSV & a, const HSV & b, uint8_t factor = 50){
-	//untested
+HSV mix(const HSV& a, const HSV& b, uint8_t factor = 50) {
+	// untested
 	HSV new_hsv;
 
-	new_hsv.hue = a.hue + ( b.hue - a.hue ) * factor; // circular
-	new_hsv.saturation = a.saturation * ( 100 - factor ) + ( b.saturation - a.saturation ) * factor;
-	new_hsv.value = a.value * ( 100 - factor ) + ( b.value - a.value ) * factor;
+	new_hsv.hue = a.hue + (b.hue - a.hue) * factor;	 // circular
+	new_hsv.saturation =
+		a.saturation * (100 - factor) + (b.saturation - a.saturation) * factor;
+	new_hsv.value = a.value * (100 - factor) + (b.value - a.value) * factor;
 
 	return new_hsv;
 }

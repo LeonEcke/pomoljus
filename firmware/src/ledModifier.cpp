@@ -42,6 +42,21 @@ void changeValue(HSV &led, int amount){
 	led.value = capped_amount;
 }
 
+void waveAnimation(uint16_t period_time_ms, uint8_t variation_amount,
+				   uint16_t offset_ms,
+				   void (&modification_method)(HSV &led, int amount)){
+
+	long tickCopy = *tick;
+	for (int i = 0; i < nr_of_leds; ++i){
+
+		uint8_t breathValue = variation_amount *
+		( ( sin((tickCopy + ( offset_ms * i ) ) *
+		(2 * pi) / period_time_ms) + 1 ) / 2 );
+
+		modification_method(led_array[i], -breathValue);
+	}
+}
+
 void breathAnimation(uint16_t period_time_ms, uint8_t variation_amount,
 					 uint8_t offset_ms, void (&modification_method)(HSV &led, int amount)){
 	long tickCopy = *tick;

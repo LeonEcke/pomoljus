@@ -11,6 +11,8 @@ Make sure tickMs is kept updated as well.
 
 void light_mode_setup(HSV* led_array_pointer, long* tick_pointer);
 
+void alarm_light_mode();
+
 void alarm_overtime_light_mode();
 
 void work_light_mode(uint8_t progress);

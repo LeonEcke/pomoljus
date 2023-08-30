@@ -20,7 +20,7 @@ set_target_properties(	ledValue PROPERTIES
 							CXX_STANDARD 17
 )
 
-# LedModifier class ===========================================================
+# LedModifier functions ===========================================================
 
 set(LEDMODIFIER_HEADER "../include/ledModifier/ledModifier.hpp")
 
@@ -40,6 +40,30 @@ target_link_libraries(	ledModifier
 )
 
 set_target_properties(	ledModifier PROPERTIES
+							CXX_STANDARD 17
+)
+
+# LedModes class ===========================================================
+
+set(LEDMODES_HEADER "../include/ledModes/ledModes.hpp")
+
+add_library(ledModes STATIC ledModes.cpp "${LEDMODES_HEADER}")
+
+target_include_directories(	ledModes
+							PUBLIC
+							"../include"
+							PRIVATE
+							"../include/ledModes"
+)
+
+target_link_libraries(	ledModes
+						PRIVATE
+						pico_stdlib
+						ledValue
+						ledModifier
+)
+
+set_target_properties(	ledModes PROPERTIES
 							CXX_STANDARD 17
 )
 

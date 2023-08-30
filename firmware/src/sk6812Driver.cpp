@@ -3,11 +3,12 @@
 // Needed for PIO operation of SK6812s
 
 #include <cmath>
-#include "hardware/pio.h"
+
 #include "hardware/clocks.h"
-#include "sk6812.pio.h"
-#include "ledValue/ledValue.hpp"
+#include "hardware/pio.h"
 #include "ledModifier/ledModifier.hpp"
+#include "ledValue/ledValue.hpp"
+#include "sk6812.pio.h"
 
 int my_brightness = 100;
 
@@ -21,24 +22,21 @@ static inline void put_pixel(uint32_t pixel_grb) {
 }
 
 static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
-	return
-			((uint32_t) (r) << 8) |
-			((uint32_t) (g) << 16) |
-			(uint32_t) (b);
+	return ((uint32_t)(r) << 8) | ((uint32_t)(g) << 16) | (uint32_t)(b);
 }
 
-void set_leds(){
+void set_leds() {
 	RGB rgb;
-	for (int i = 0; i < nr_of_leds; ++i){
+	for (int i = 0; i < nr_of_leds; ++i) {
 		rgb.to_rgb(led_array[i]);
 		put_pixel(urgb_u32(rgb.red, rgb.green, rgb.blue));
 	}
 }
 
-void sk6812_init(){
+void sk6812_init() {
 	stdio_init_all();
 
-		// todo get free sm
+	// todo get free sm
 	PIO pio = pio0;
 	int sm = 0;
 	int offset = pio_add_program(pio, &sk6812_program);
@@ -50,8 +48,7 @@ void sk6812_init(){
 	setPointers(led_array, &tickMs);
 }
 
-void sk6812_loop(){
-
+void sk6812_loop() {
 	static uint8_t ix = 0;
 
 	tick = get_absolute_time();

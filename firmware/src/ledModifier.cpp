@@ -1,9 +1,12 @@
 #include "ledModifier.hpp"
 #include "pico/stdlib.h"
+#include <cmath>
 
 static HSV* led_array;
 static long* tick;
 const int nr_of_leds = 5; //OBS, should be inherrited once linked
+
+static const double pi = 3.14159265359;
 
 void setPointers(HSV *led_array_pointer, long *tick_pointer){
 	led_array = led_array_pointer;
@@ -37,6 +40,15 @@ void changeValue(HSV &led, int amount){
 	else if (capped_amount > 255)
 		capped_amount = 255;
 	led.value = capped_amount;
+}
+
+void breathAnimation(uint16_t period_time_ms, uint8_t variation_amount,
+					 uint8_t offset_ms, void (&modification_method)(HSV &led, int amount)){
+	long tickCopy = *tick;
+	uint8_t breathValue = variation_amount * ( ( sin((tickCopy + offset_ms) * (2 * pi) / period_time_ms) + 1 ) / 2 );
+	for (int i = 0; i < nr_of_leds; ++i){
+		modification_method(led_array[i], -breathValue);
+	}
 }
 
 void progressAnimation(uint8_t progress, uint8_t variation_amount,

@@ -60,7 +60,9 @@ void sk6812_loop(){
 	HSV setLed = {0, 255, 100};
 	setColour(setLed);
 
-	breathAnimation(10000, 200, 0, changeHue);
+	waveAnimation(10000, 200, 400, changeHue);
+
+	breathAnimation(5000, 255, 0, changeSaturation);
 
 	progressAnimation(ix, 100, changeValue);
 	set_leds();

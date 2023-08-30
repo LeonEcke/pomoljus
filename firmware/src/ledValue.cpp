@@ -5,11 +5,16 @@
 
 #include "pico/stdlib.h"
 
+
+static const uint8_t byte_max_value = 0xFF;
+
 struct TempRGB {
 	float r, g, b;
 
 	RGB to_rgb() {
-		RGB rgb = {(uint8_t)(r * 255), (uint8_t)(g * 255), (uint8_t)(b * 255)};
+		RGB rgb = {(uint8_t)(r * byte_max_value),
+				   (uint8_t)(g * byte_max_value),
+				   (uint8_t)(b * byte_max_value)};
 		return rgb;
 	}
 };
@@ -24,8 +29,8 @@ void RGB::to_rgb(const HSV& hsv) {
 	const float H = (hsv.hue / 42.5);
 
 	// saturation and value normalized to ]0, 1[
-	const float S = hsv.saturation / 255.0;
-	const float V = hsv.value / 255.0;
+	const float S = hsv.saturation / (float)byte_max_value;
+	const float V = hsv.value / (float)byte_max_value;
 
 	const float x = V * (1.0 - S);
 	const float y = V * (1.0 - (H - std::floor(H)) * S);
@@ -46,9 +51,9 @@ void RGB::to_rgb(const HSV& hsv) {
 	else  // (int)H == 5 or 6
 		temp = {V, x, y};
 
-	red = temp.r * 255.0;
-	green = temp.g * 255.0;
-	blue = temp.b * 255.0;
+	red = temp.r * (float)byte_max_value;
+	green = temp.g * (float)byte_max_value;
+	blue = temp.b * (float)byte_max_value;
 }
 
 uint32_t RGB::to_single_value() const {
@@ -83,15 +88,15 @@ void HSV::to_hsv(const RGB& rgb) {
 	if (delta == 0)	 // if all colours are equal then saturation is 0
 		hue = 0;	 // and hue is undefined. So its set to 0.
 	else if (max == rgb.red)
-		hue = ((float)(rgb.green - rgb.blue) / delta) * 255;
+		hue = ((float)(rgb.green - rgb.blue) / delta) * byte_max_value;
 	else if (max == rgb.green)
-		hue = (((float)(rgb.blue - rgb.red) / delta) + 2) * 255;
+		hue = (((float)(rgb.blue - rgb.red) / delta) + 2) * byte_max_value;
 	else if (max == rgb.blue)
-		hue = (((float)(rgb.red - rgb.green) / delta) + 4) * 255;
+		hue = (((float)(rgb.red - rgb.green) / delta) + 4) * byte_max_value;
 
 	value = max;  // value is equal to largest RGB value
 
-	saturation = (value == 0 ? 0 : ((delta / value) * 255));
+	saturation = (value == 0 ? 0 : ((delta / value) * byte_max_value));
 }
 
 RGB mix(const RGB& a, const RGB& b, uint8_t factor = 50) {

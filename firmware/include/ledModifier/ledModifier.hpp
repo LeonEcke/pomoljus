@@ -58,7 +58,7 @@ void changeValue(HSV& led, int amount);
 /// @param period_time_sec Time for a full sin cycle to be completed.
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
-void sinWaveAnimation(uint16_t period_time_ms, uint8_t variation_amount,
+void waveAnimation(uint16_t period_time_ms, uint8_t variation_amount,
 						uint8_t offset_ms, void (&modification_method)(HSV& led, int amount));
 
 /// @brief A subtractive animation that varies the selected value in and out

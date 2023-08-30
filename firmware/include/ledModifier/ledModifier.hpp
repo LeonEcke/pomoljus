@@ -69,8 +69,11 @@ void waveAnimation(uint16_t period_time_ms, uint8_t variation_amount,
 void breathAnimation(uint16_t period_time_ms, uint8_t variation_amount,
 						uint16_t offset_ms, void (&modification_method)(HSV& led, int amount));
 
+
+// Progress indicating modifiers ( uses progression value ) ===================
+
 /// @brief A progress bar.
-/// @param progress A value `]0, 100[` representing completed percentage.
+/// @param progress A value `]0, 255[` representing completed percentage.
 /// @param variation_amount Maximum change.
 /// @param modification_method HSV change method.
 void progressAnimation(uint8_t progress, uint8_t variation_amount,

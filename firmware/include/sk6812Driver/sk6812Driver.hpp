@@ -5,15 +5,15 @@
 
 #include "pico/stdlib.h"
 
-#define led_data_output_pin 2
-#define nr_of_leds 5
+//#define led_data_output_pin 2
+//#define nr_of_leds 5
 
 struct colour_value {
 	uint32_t hue;
 	uint8_t brightness;
 };
 
-void sk6812_init();
+void sk6812_init(int led_data_output_pin, int nr_of_leds);
 
 void sk6812_loop();
 

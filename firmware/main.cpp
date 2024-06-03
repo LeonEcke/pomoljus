@@ -1,7 +1,7 @@
 #include "pico/stdlib.h"
 #include <stdio.h>
 
-#include <sk6812Driver/sk6812Driver.hpp>
+#include <ledController/ledController.hpp>
 
 int main() {
 
@@ -9,15 +9,17 @@ int main() {
 
 	gpio_init(LED_PIN);
 	gpio_set_dir(LED_PIN, GPIO_OUT);
-	sk6812_init();
 
 	int count = 0;
-
 	uint8_t flipflop = 0;
+
+	int tickPtr = 0;
+	Led_controller led_controller = Led_controller(2, 5, &tickPtr, 100);
 
 	while(1){
 		
-		sk6812_loop();
+		//sk6812_loop();
+		
 
 		if ( count == 0 ){
 			gpio_put(LED_PIN, flipflop);

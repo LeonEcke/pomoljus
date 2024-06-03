@@ -12,7 +12,8 @@
 
 int my_brightness = 100;
 
-struct HSV led_array[nr_of_leds];
+HSV* led_array;
+static int led_amount;
 
 static const uint8_t byte_max_value = 0xFF;
 
@@ -29,13 +30,17 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
 
 void set_leds() {
 	RGB rgb;
-	for (int i = 0; i < nr_of_leds; ++i) {
+	for (int i = 0; i < led_amount; ++i) {
 		rgb.to_rgb(led_array[i]);
 		put_pixel(urgb_u32(rgb.red, rgb.green, rgb.blue));
 	}
 }
 
-void sk6812_init() {
+void sk6812_init(int led_data_output_pin, int nr_of_leds) {
+
+	led_array = new HSV[nr_of_leds];
+	led_amount = nr_of_leds;
+
 	stdio_init_all();
 
 	// todo get free sm

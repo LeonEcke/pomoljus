@@ -29,7 +29,7 @@ pico_generate_pio_header(sk6812Driver ${CMAKE_CURRENT_LIST_DIR}/pio/sk6812.pio)
 # Link libraries to main
 target_link_libraries(	main
 						PRIVATE
-						sk6812Driver
+						ledController
 						pico_stdlib
 )
 

@@ -1,4 +1,27 @@
-# LedValue class ==============================================================
+# LedController class ==============================================================
+
+set(LEDVALUE_HEADER "../include/ledController/ledController.hpp")
+
+add_library(ledController STATIC ledController.cpp "${LEDVALUE_HEADER}")
+
+target_include_directories(	ledController
+							PUBLIC
+							"../include"
+							PRIVATE
+							"../include/ledController"
+)
+
+target_link_libraries(	ledController
+						PRIVATE
+						pico_stdlib
+						ledModes
+						sk6812Driver
+)
+
+set_target_properties(	ledController PROPERTIES
+							CXX_STANDARD 17
+
+)# LedValue class ==============================================================
 
 set(LEDVALUE_HEADER "../include/ledValue/ledValue.hpp")
 
